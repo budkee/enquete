@@ -25,12 +25,12 @@ SECRET_KEY = "django-insecure-l)%*coa6jnuvcdj9+_aarp@7)n%8q=9d-u)3p0djc+)(9i&z7a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = [
+    "enquete.apps.EnqueteConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -53,8 +53,8 @@ ROOT_URLCONF = "enquetapp.urls"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "BACKEND": 'django.template.backends.django.DjangoTemplates',
+        "DIRS": ["./enquete/templates/"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Campo_Grande"
 
 USE_I18N = True
 
