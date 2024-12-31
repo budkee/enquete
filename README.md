@@ -87,7 +87,11 @@ O EnquetApp visa se tornar o principal destino para criar, compartilhar e descob
 - Página de “resultados” de perguntas - exibe os resultados de uma pergunta em particular.
 - Ação de voto - gerencia a votação para uma escolha particular em uma enquete em particular.
 
-### Próximas Melhorias
+### Criando a interface do admin
+
+   python manage.py createsuperuser
+
+## Próximas Melhorias
 
 - [] Template para Detalhes
 - [] Template para Resultados

@@ -1,14 +1,13 @@
-#from django.http import HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Question
-from django.template import loader
 
 # Create your views here.
 
 def index(request):
 
     ultima_lista_perguntas = Question.objects.order_by("-pub_date")[:5]
-    template = loader.get_template("enquete/index.html")
+
     context = {
         "ultima_lista_perguntas": ultima_lista_perguntas,
     }
