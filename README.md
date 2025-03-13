@@ -1,104 +1,138 @@
-# EnquetApp: descubra, opine e compartilhe!
+# Roteiro para Projeto Django com Clean Architecture
 
-## Visão Geral
+## 1. Contexto da Aplicação
 
-**EnquetApp** é um aplicativo inovador que visa transformar a maneira como as pessoas interagem com enquetes e pesquisas. Com uma interface intuitiva e amigável, o EnquetApp oferece uma plataforma digital envolvente para criar, compartilhar e participar de enquetes sobre uma variedade de tópicos, desde questões sociais e políticas até preferências pessoais e tendências culturais.
+Esta aplicação tem como principal objetivo permitir que usuários cadastrados criem e gerenciem suas enquetes por categorias. Cada enquete terá perguntas com múltiplas opções de resposta, e os usuários poderão visualizar e votar nas enquetes disponíveis. A aplicação será uma API RESTful monolítica construída com Django, Docker e Once UI.
 
-## Sobre o Negócio
-### Modelo de Negócio
+## 2. Arquitetura da Aplicação
 
-O EnquetApp adota um modelo de negócio freemium, oferecendo funcionalidades básicas gratuitas para todos os usuários, com a opção de atualização para uma assinatura premium para recursos avançados.
+Adotaremos a Clean Architecture, separando bem as responsabilidades e tornando o sistema mais modular, testável e flexível.
 
-Aqui estão os principais componentes do modelo de negócio:
+**Camadas:**
 
-1. **Versão Gratuita:**
-   - **Criação de Enquetes Básicas:** Os usuários podem criar enquetes simples com opções de resposta limitadas.
-   - **Participação em Enquetes Públicas:** Os usuários podem participar de enquetes públicas e ver os resultados gerais.
-   - **Perfil Pessoal:** Cada usuário tem um perfil básico para acompanhar suas enquetes criadas e participadas.
+- **Entities (Entidades):** Regras de negócio de mais alto nível, independentes de frameworks.
+- **Use Cases (Casos de Uso):** Lógica de aplicação, contendo operações específicas da aplicação.
+- **Interface Adapters (Adaptadores):** Traduzem dados entre as camadas internas e externas (Views, Serializers, Repositórios).
+- **Frameworks e Drivers:** Detalhes externos como Django, Docker, banco de dados, Once UI.
 
-2. **Assinatura Premium:**
-   - **Enquetes Avançadas:** Recursos aprimorados de criação de enquetes, incluindo múltiplas opções de resposta, perguntas condicionais e design personalizado.
-   - **Análises Detalhadas:** Insights detalhados sobre os resultados das enquetes, incluindo gráficos, estatísticas e tendências.
-   - **Enquetes Privadas:** Capacidade de criar enquetes privadas para um grupo seleto de pessoas ou para uso corporativo.
-   - **Remoção de Anúncios:** Experiência livre de anúncios para uma navegação mais fluida e sem interrupções.
+Estrutura de diretórios:
 
-3. **Receita:**
-   - **Assinaturas Premium:** Os usuários podem optar por planos mensais ou anuais para desbloquear os recursos premium.
-   - **Publicidade Direcionada:** Parcerias com empresas interessadas em promover produtos e serviços por meio de enquetes segmentadas.
-   - **Colaborações Corporativas:** Ofertas personalizadas para empresas que desejam usar o EnquetApp para pesquisas internas, feedback de funcionários e análises de mercado.
+```bash
+project/
+│
+├── entities/                    # Entidades
+│   ├── user.py                  # Entidade Usuário
+│   ├── category.py              # Entidade Categoria
+│   ├── poll.py                  # Entidade Enquete
+│   └── question.py              # Entidade Pergunta
+│
+├── use_cases/                   # Casos de Uso
+│   ├── create_poll.py           # Criar Enquete
+│   ├── update_poll.py           # Atualizar Enquete
+│   ├── delete_poll.py           # Deletar Enquete
+│   └── list_polls.py            # Listar Enquetes
+│
+├── adapters/                    # Adaptadores
+│   ├── repositories/            # Repositórios
+│   │   └── poll_repository.py   # Repositório de Enquetes
+│   └── views/                   # Views Django
+│       └── poll_view.py         # View de Enquetes
+│
+├── frameworks/                  # Frameworks externos
+│   ├── django_app/              # Configuração do Django
+│   ├── docker/                  # Configuração do Docker
+│   └── once_ui/                 # Integração com Once UI
+│
+└── main.py                      # Ponto de entrada
+```
 
-### Segmento de Mercado
+## 3. Entidades
 
-O EnquetApp tem como alvo um amplo espectro de usuários, incluindo:
+**Usuário:** Representa quem cria e gerencia enquetes.
 
-- **Indivíduos Curiosos:** Pessoas interessadas em saber a opinião pública sobre diversos assuntos, desde entretenimento até questões sociais.
-  
-- **Profissionais de Marketing e Pesquisadores:** Para realizar pesquisas de mercado, coletar feedback do público-alvo e testar ideias rapidamente.
-  
-- **Empresas e Instituições:** Para coletar feedback dos funcionários, envolver clientes em pesquisas de satisfação e criar enquetes para tomadas de decisão internas.
+- `id`: Identificador único.
+- `username`: Nome de usuário.
+- `email`: Email do usuário.
+- `password`: Senha.
 
-### Estratégias de Crescimento
+**Categoria:** Agrupa enquetes em temas.
 
-1. **Marketing Digital:**
-   - Campanhas nas redes sociais para aumentar a conscientização sobre o EnquetApp.
-   - Parcerias com influenciadores digitais e bloggers para revisões e recomendações.
-   - Anúncios segmentados online para alcançar públicos específicos.
+- `id`: Identificador único.
+- `name`: Nome da categoria.
 
-2. **Engajamento da Comunidade:**
-   - Desafios de enquetes semanais com prêmios para incentivar o uso regular do aplicativo.
-   - Recompensas para usuários que convidarem amigos e familiares para se juntarem ao EnquetApp.
+**Enquete:** Conjunto de perguntas sobre um tema.
 
-3. **Desenvolvimento Contínuo:**
-   - Introdução de novos recursos com base no feedback dos usuários.
-   - Aperfeiçoamento da experiência do usuário para uma navegação intuitiva e agradável.
+- `id`: Identificador único.
+- `title`: Título da enquete.
+- `category_id`: Categoria associada.
+- `user_id`: Criador da enquete.
 
-4. **Parcerias Estratégicas:**
-   - Colaborações com instituições educacionais para uso em salas de aula e pesquisas acadêmicas.
-   - Alianças com empresas de mídia para enquetes exclusivas em eventos e programas.
+**Pergunta:** Parte de uma enquete.
 
-### Vantagens Competitivas
+- `id`: Identificador único.
+- `poll_id`: Enquete associada.
+- `text`: Texto da pergunta.
 
-1. **Interface Intuitiva e Atraente:** Uma experiência de usuário moderna e fácil de usar, desde a criação até a participação nas enquetes.
+**Opção:** Respostas possíveis para uma pergunta.
 
-2. **Recursos Avançados de Análise:** Insights detalhados e estatísticas precisas para uma compreensão aprofundada dos resultados das enquetes.
+- `id`: Identificador único.
+- `question_id`: Pergunta associada.
+- `text`: Texto da opção.
+- `votes`: Número de votos.
 
-3. **Versatilidade de Uso:** Flexibilidade para enquetes pessoais, profissionais e corporativas, atendendo a uma variedade de necessidades.
+## 4. Casos de Uso
 
-4. **Segurança e Privacidade:** Proteção dos dados do usuário e opções para enquetes públicas e privadas para garantir a confidencialidade quando necessário.
+**Enquetes:**
 
-O EnquetApp visa se tornar o principal destino para criar, compartilhar e descobrir opiniões em tempo real sobre uma infinidade de tópicos, oferecendo uma plataforma envolvente que une pessoas por meio da participação ativa em pesquisas e enquetes.
+- `create_poll(title, category_id, user_id)`: Cria uma nova enquete.
+- `update_poll(poll_id, title, category_id)`: Atualiza uma enquete existente.
+- `delete_poll(poll_id)`: Remove uma enquete.
+- `list_polls(category_id)`: Lista enquetes de uma categoria.
 
-## Desenvolvimento
+**Perguntas:**
 
-### Models
+- `add_question(poll_id, text)`: Adiciona uma pergunta.
+- `update_question(question_id, text)`: Atualiza uma pergunta.
+- `delete_question(question_id)`: Remove uma pergunta.
 
-> Análogo aos Relacionamentos do Banco de Dados. [Aqui](./enquete/models.py) eles se apresentam como classes que por sua vez contém métodos e atributos.
+**Opções:**
 
-- `Question()`: tabela das perguntas, contendo o texto das perguntas e a data de publicação.
+- `add_option(question_id, text)`: Adiciona uma opção.
+- `vote_option(option_id)`: Vota em uma opção.
 
-- `Choice()`: tabela das respostas, contendo a pergunta, o texto da resposta e o número de votos.
+## 5. Docker
 
-### Views
+Configuraremos Docker para rodar o Django e o banco de dados PostgreSQL em containers separados.
 
-> Cada `view` representa uma interface ou conteúdo a ser disponibilizado ao usuário e é representado por uma função ou método `class-based views`.
+**docker-compose.yml:**
 
-- Página de “índice” de enquetes - exibe as enquetes mais recente.
-- Página de “detalhes” da pergunta – exibe o testo da pergunta, com um formulário para votar.
-- Página de “resultados” de perguntas - exibe os resultados de uma pergunta em particular.
-- Ação de voto - gerencia a votação para uma escolha particular em uma enquete em particular.
+```yaml
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: polls
+```
 
-### Criando a interface do admin
+## 6. Once UI
 
-   python manage.py createsuperuser
+Once UI será usado para criar uma interface leve e moderna para a API. Vamos integrar através de componentes reutilizáveis.
 
-## Próximas Melhorias
+## 7. DDD (Domain-Driven Design)
 
-- [] Template para Detalhes
-- [] Template para Resultados
-- [] Template para Votação
+No DDD, focamos na modelagem do domínio da aplicação:
 
-## Links e Referências
+- **Agregados:** Enquete como raiz, contendo perguntas e opções.
+- **Entidades:** Usuário, Categoria, Enquete, Pergunta, Opção.
+- **Repositórios:** Abstração da persistência dos dados.
+- **Serviços:** Implementação dos casos de uso.
 
-- [Django App | Part. 01](https://docs.djangoproject.com/pt-br/5.0/intro/tutorial01/)
-- [Django App | Part. 02](https://docs.djangoproject.com/pt-br/5.0/intro/tutorial02/)
-- [Django App | Part. 03](https://docs.djangoproject.com/pt-br/5.0/intro/tutorial03/#raising-a-404-error)
+Esse roteiro cobre a base para começar a construção do projeto. Podemos detalhar mais qualquer parte se precisar!
