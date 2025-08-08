@@ -1,13 +1,13 @@
 #!/bin/zsh
 # 
-# Repositório no GitHub: https://github.com/budkee/<repo>
+# Link pro Repositório: https://github.com/budkee/enquete
 #
 # Alterar a mensagem conforme o que foi feito no dia 
-
+echo "\n # -------------- Git add -------------- #"
 git add .
-git commit -m "Enquetapp | Organização #03"
-echo "\n"
+echo "\n # -------------- Git commit -------------- #"
+git commit -m "Add link do repo | 08/08/25"
+echo "\n # -------------- Git Push -------------- #"
 git push
-echo "\n"
+echo "\n # -------------- Git Status -------------- #"
 git status
-

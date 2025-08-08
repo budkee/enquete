@@ -2,11 +2,11 @@
 
 ## 1. Contexto da Aplicação
 
-Esta aplicação tem como principal objetivo permitir que usuários cadastrados criem e gerenciem suas enquetes por categorias. Cada enquete terá perguntas com múltiplas opções de resposta, e os usuários poderão visualizar e votar nas enquetes disponíveis. A aplicação será uma API RESTful monolítica construída com Django, Docker e Once UI.
+Esta aplicação tem como principal objetivo permitir que usuários cadastrados criem e gerenciem suas enquetes por categorias. Cada enquete terá perguntas com múltiplas opções de resposta, e os usuários poderão visualizar e votar nas enquetes disponíveis. 
 
 ## 2. Arquitetura da Aplicação
 
-Adotaremos a Clean Architecture, separando bem as responsabilidades e tornando o sistema mais modular, testável e flexível.
+A aplicação será uma API RESTful monolítica construída com Django, Docker e Once UI. Adotaremos a Clean Architecture, separando bem as responsabilidades e tornando o sistema mais modular, testável e flexível.
 
 **Camadas:**
 
@@ -135,4 +135,6 @@ No DDD, focamos na modelagem do domínio da aplicação:
 - **Repositórios:** Abstração da persistência dos dados.
 - **Serviços:** Implementação dos casos de uso.
 
-Esse roteiro cobre a base para começar a construção do projeto. Podemos detalhar mais qualquer parte se precisar!
+## Link do repositorio
+
+- [GitHub](https://github.com/budkee/enquete)
